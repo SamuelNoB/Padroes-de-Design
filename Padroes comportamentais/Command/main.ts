@@ -10,8 +10,7 @@ function main() {
     const account1 = bank.createAccount("Samuel");
     const account2 = bank.createAccount("google");
     const account3 = bank.createAccount("Microsoft");
-    const account = 0
-
+    
     const commands= [
     new Deposit(account1, 100000),
     new Deposit(account2, 100000), 
