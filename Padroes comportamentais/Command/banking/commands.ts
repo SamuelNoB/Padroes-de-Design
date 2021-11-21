@@ -97,3 +97,37 @@ export class Trasfer implements Transaction{
         
     }
 }
+
+export class Batch implements Transaction {
+    commands: Transaction[] = [];
+    constructor(commands: Transaction[]) {
+        this.commands = commands;
+    }
+
+    execute(): void {
+        const completedCommands: Transaction[] = [];
+        try {
+            for (const command of this.commands) {
+                command.execute();
+                completedCommands.push(command);
+            }
+        } catch (error) {
+            console.log(error);
+            for (const command of completedCommands.reverse()) {
+                command.undo();
+            }
+        }
+    }
+
+    undo(): void {
+        for (const command of this.commands.reverse()) {
+            command.undo()
+        }
+    }
+
+    redo(): void {
+        for (const command of this.commands) {
+            command.redo();
+        }
+    }
+}

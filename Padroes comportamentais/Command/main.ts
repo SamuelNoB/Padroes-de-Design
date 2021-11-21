@@ -1,5 +1,5 @@
 import { Bank } from "./banking/banking";
-import { Deposit, Withdraw, Trasfer } from "./banking/commands";
+import { Deposit, Withdraw, Trasfer, Batch } from "./banking/commands";
 import { BankController } from "./banking/controller";
 
 function main() {
@@ -10,17 +10,18 @@ function main() {
     const account1 = bank.createAccount("Samuel");
     const account2 = bank.createAccount("google");
     const account3 = bank.createAccount("Microsoft");
+    const account = 0
 
-    controller.execute(new Deposit(account1, 100000));
-    controller.execute(new Deposit(account2, 100000));
-    controller.execute(new Deposit(account3, 100000));
-    controller.undo();
-    controller.redo()
+    const commands= [
+    new Deposit(account1, 100000),
+    new Deposit(account2, 100000), 
+    new Deposit(account3, 100000),
+    new Trasfer(account2, account1, 50000),
+    new Withdraw(account1, 10000000)
+    ];
 
-    controller.execute(new Trasfer(account2, account1, 50000));
+    controller.execute(new Batch(commands))
 
-    controller.execute(new Withdraw(account1, 150000));
-    
     console.table(bank.accounts);
 }
 
